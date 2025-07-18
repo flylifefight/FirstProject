@@ -20,7 +20,7 @@ void rcu_config(void)
     /* enable GPIOB clock */
     rcu_periph_clock_enable(RCU_GPIOB);
     /* enable ADC0 clock */
-    rcu_periph_clock_enable(RCU_ADC0);
+    rcu_periph_clock_enable(RCU_ADC2);
     /* enable timer0 clock */
     rcu_periph_clock_enable(RCU_TIMER0);
     /* enable timer1 clock */
@@ -33,6 +33,7 @@ void rcu_config(void)
     rcu_periph_clock_enable(RCU_AF);
     /* enable DMA0 clock */
     rcu_periph_clock_enable(RCU_DMA0);
+    rcu_periph_clock_enable(RCU_DMA1);
     /* config ADC clock */
     rcu_adc_clock_config(RCU_CKADC_CKAPB2_DIV4);
 }
@@ -47,21 +48,6 @@ void rcu_config(void)
 void nvic_config(void)
 {
     nvic_priority_group_set(NVIC_PRIGROUP_PRE2_SUB2);
-}
-
-void b10_test(void)
-{
-    static uint8_t flag = 0;
-    if(flag == 0)
-    {
-        gpio_bit_set(GPIOB,GPIO_PIN_10);
-        flag = 1;
-    }
-    else
-    {
-        gpio_bit_reset(GPIOB,GPIO_PIN_10);
-        flag = 0;
-    }
 }
 
 
@@ -82,9 +68,6 @@ int main(void)
     
     adc_config();
     usart0_config();
-    
-    gpio_init(GPIOB, GPIO_MODE_OUT_PP, GPIO_OSPEED_MAX, GPIO_PIN_10); 
-    gpio_bit_reset(GPIOB,GPIO_PIN_10);
     
     //timer初始化顺序不能变更
     timer2_config();

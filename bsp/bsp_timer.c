@@ -57,8 +57,8 @@ void timer0_interrupt_callback(void)
 */
 void timer1_config(void)
 {
-    gpio_init(GPIOA, GPIO_MODE_AF_PP, GPIO_OSPEED_MAX, GPIO_PIN_1); 
-    gpio_pin_remap_config(GPIO_TIMER1_PARTIAL_REMAP1,ENABLE);
+    gpio_init(GPIOB, GPIO_MODE_AF_PP, GPIO_OSPEED_MAX, GPIO_PIN_10); 
+    gpio_pin_remap_config(GPIO_TIMER1_FULL_REMAP,ENABLE);
     timer_oc_parameter_struct timer_ocintpara;
     timer_parameter_struct timer_initpara;
 	
@@ -83,17 +83,17 @@ void timer1_config(void)
     timer_ocintpara.ocidlestate  = TIMER_OC_IDLE_STATE_LOW;
     timer_ocintpara.ocnidlestate = TIMER_OCN_IDLE_STATE_LOW;
 
-    timer_channel_output_config(TIMER1,TIMER_CH_1,&timer_ocintpara);
+    timer_channel_output_config(TIMER1,TIMER_CH_2,&timer_ocintpara);
 
-    timer_channel_output_pulse_value_config(TIMER1, TIMER_CH_1, 29);
-    timer_channel_output_mode_config(TIMER1,TIMER_CH_1,TIMER_OC_MODE_PWM0);
-    timer_channel_output_shadow_config(TIMER1,TIMER_CH_1,TIMER_OC_SHADOW_DISABLE);
+    timer_channel_output_pulse_value_config(TIMER1, TIMER_CH_2, 29);
+    timer_channel_output_mode_config(TIMER1,TIMER_CH_2,TIMER_OC_MODE_PWM0);
+    timer_channel_output_shadow_config(TIMER1,TIMER_CH_2,TIMER_OC_SHADOW_DISABLE);
     
     /* auto-reload preload enable */
     timer_auto_reload_shadow_enable(TIMER1);
     
     //master mode
-    timer_master_output_trigger_source_select(TIMER1,TIMER_TRI_OUT_SRC_O1CPRE);
+    timer_master_output_trigger_source_select(TIMER1,TIMER_TRI_OUT_SRC_O2CPRE);
     timer_master_slave_mode_config(TIMER1,TIMER_MASTER_SLAVE_MODE_ENABLE); 
     /* auto-reload preload enable */
     timer_enable(TIMER1);

@@ -40,7 +40,6 @@ OF SUCH DAMAGE.
 #include "bsp_usart.h"
 
 
-extern void b10_test(void);
 /*!
     \brief      this function handles NMI exception
     \param[in]  none
@@ -144,13 +143,22 @@ void SysTick_Handler(void)
     delay_decrement();
 }
 
-void DMA0_Channel0_IRQHandler(void)
+
+void DMA1_Channel3_IRQHandler(void)
 {
-    if(dma_interrupt_flag_get(DMA0, DMA_CH0, DMA_INT_FLAG_FTF) != RESET)
+    if(dma_interrupt_flag_get(DMA1, DMA_CH4, DMA_INT_FLAG_FTF) != RESET)
     {
-        b10_test();
         adc_collect_complete_callback();
-        dma_interrupt_flag_clear(DMA0, DMA_CH0, DMA_INT_FLAG_FTF);
+        dma_interrupt_flag_clear(DMA1, DMA_CH4, DMA_INT_FLAG_FTF);
+    }
+}
+
+void DMA1_Channel4_IRQHandler(void)
+{
+    if(dma_interrupt_flag_get(DMA1, DMA_CH4, DMA_INT_FLAG_FTF) != RESET)
+    {
+        adc_collect_complete_callback();
+        dma_interrupt_flag_clear(DMA1, DMA_CH4, DMA_INT_FLAG_FTF);
     }
 }
 
@@ -168,7 +176,6 @@ void TIMER0_UP_TIMER9_IRQHandler(void)
 {     
     if(timer_interrupt_flag_get(TIMER0, TIMER_INT_FLAG_UP) != RESET)
     {
-        b10_test();
         timer0_interrupt_callback();
         timer_interrupt_flag_clear(TIMER0, TIMER_INT_FLAG_UP);
     }
@@ -178,7 +185,6 @@ void TIMER2_IRQHandler(void)
 {
     if(timer_interrupt_flag_get(TIMER2, TIMER_INT_FLAG_CH0) != RESET)
     {
-        b10_test();
         adc_start_collect();
         timer2_interrupt_callback();
         timer_interrupt_flag_clear(TIMER2, TIMER_INT_FLAG_CH0);
